@@ -3,6 +3,7 @@ package ro.pub.cs.systems.eim.colocviu1_13;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,13 +14,16 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
     private Button navigateToSecondaryActivityButton;
     String newCoordinates, oldText;
 
+    private int noOfClicks = 0;
     private ButtonClickListener buttonClickListener = new ButtonClickListener();
     private class ButtonClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()) {
+            noOfClicks++;
+            Log.d("[Number of clicked buttons]", String.valueOf(noOfClicks));
 
+            switch(view.getId()) {
                 case R.id.north_button:
                     oldText = textView.getText().toString();
                     if (oldText == "") {
@@ -75,4 +79,18 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
         textView = (TextView)findViewById(R.id.text_view);
 
     }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("noOfClicks", String.valueOf(noOfClicks));
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey("noOfClicks")) {
+            noOfClicks = Integer.parseInt(savedInstanceState.getString("noOfClicks"));
+        } else {
+            noOfClicks = 0;
+        }
+    }
+
 }
