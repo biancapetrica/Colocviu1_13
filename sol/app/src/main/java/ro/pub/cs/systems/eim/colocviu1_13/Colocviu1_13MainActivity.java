@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Colocviu1_13MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -60,6 +61,13 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
                     }
                     textView.setText(newCoordinates);
                     break;
+                case R.id.secondary_activity_button:
+                    Intent intent = new Intent(getApplicationContext(), Colocviu1_13SecondaryActivity.class);
+                    intent.putExtra("instructions", textView.getText().toString());
+                    textView.setText("");
+                    noOfClicks = 0;
+                    startActivityForResult(intent, 1);
+                    break;
             }
         }
     }
@@ -78,6 +86,9 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
         westButton.setOnClickListener(buttonClickListener);
         textView = (TextView)findViewById(R.id.text_view);
 
+        navigateToSecondaryActivityButton = (Button)findViewById(R.id.secondary_activity_button);
+        navigateToSecondaryActivityButton.setOnClickListener(buttonClickListener);
+
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -90,6 +101,18 @@ public class Colocviu1_13MainActivity extends AppCompatActivity {
             noOfClicks = Integer.parseInt(savedInstanceState.getString("noOfClicks"));
         } else {
             noOfClicks = 0;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 1) {
+            if (resultCode == 1) {
+                Toast.makeText(this, "The activity returned from button Register", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "The activity returned from button Cancel", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
